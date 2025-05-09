@@ -1,7 +1,7 @@
 import re
 
-def strip_emoji(text):
-    RE_EMOJI = re.compile(
+# Precompiled regex patterns for efficiency
+RE_EMOJI = re.compile(
     "["
     "\U0001F1E0-\U0001F1FF"  # flags (iOS)
     "\U0001F300-\U0001F5FF"  # symbols & pictographs
@@ -14,17 +14,25 @@ def strip_emoji(text):
     "\U0001FA00-\U0001FA6F"  # Chess Symbols
     "\U0001FA70-\U0001FAFF"  # Symbols and Pictographs Extended-A
     "\U00002702-\U000027B0"  # Dingbats
-    "\U000024C2-\U0001F251" 
+    "\U000024C2-\U0001F251"
     "]+"
-    )
-    return RE_EMOJI.sub(r'', text)
+)
+RE_URL = re.compile(r'\w+:\/{2}[\d\w-]+(\.[\d\w-]+)*(?:(?:\/[^\s/]*))*')
 
+def remove_emoji(text: str) -> str:
+    """
+    Remove emojis from the input text.
+    """
+    return RE_EMOJI.sub('', text)
 
-def strip_url(text):
- return re.sub(r'\w+:\/{2}[\d\w-]+(\.[\d\w-]+)*(?:(?:\/[^\s/]*))*', '', text)
+def remove_url(text: str) -> str:
+    """
+    Remove URLs from the input text.
+    """
+    return RE_URL.sub('', text)
 
-
-# Remove extra white spaces
-def remove_extra_whitespace(text):
-    return  " ".join(text.split())
-
+def remove_extra_whitespace(text: str) -> str:
+    """
+    Remove extra whitespace from the input text.
+    """
+    return " ".join(text.split())
